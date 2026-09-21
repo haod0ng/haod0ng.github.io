@@ -1,107 +1,44 @@
 'use client';
-import { personalInfo } from '@/website.config';
-import {
-  RiMenuLine,
-  RiCloseLine,
-  RiSunLine,
-  RiMoonLine,
-} from '@remixicon/react';
+
+import { RiSunLine, RiMoonLine } from '@remixicon/react';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
 import { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
 import { navigations } from '@/website.config';
 
 export default function Header() {
-  const [menuIsOpen, setMenuIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  if (!mounted) {
-    return null;
-  }
-
-  const nav = navigations.map((navigation) => (
-    <Button asChild variant="ghost" key={navigation.name}>
-      <Link href={navigation.route} className=" font-normal">
-        {navigation.name}
-      </Link>
-    </Button>
-  ));
+  const isDark = mounted && resolvedTheme === 'dark';
+  const themeLabel = `Switch to ${isDark ? 'light' : 'dark'} theme`;
 
   return (
-    <div
-      className={`flex flex-col fixed top-0 w-full bg-neutral-50/80 dark:bg-neutral-800/30 backdrop-blur-lg content-start `}
-    >
-      <nav className="flex justify-between m-auto md:w-[50rem] w-full py-4 text-lg px-4 h-auto">
-        <Button asChild variant="ghost">
-          <Link href={'/'} className="font-semibold">
-            {personalInfo.name}
-          </Link>
-        </Button>
-        <div className="flex">
-          {/* <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}> */}
-          <div style={{ display: 'none', justifyContent: 'center', alignItems: 'center' }}>
-          </div>
-          <div className="md:block hidden text-neutral-600 ">
-            {nav}
-            {/* <Button asChild variant="ghost">
-              <Link href={'/projects'} className=" font-normal">
-                Projects
-              </Link>
-            </Button>
-            <Button asChild variant="ghost" className=" font-normal">
-              <Link href={'/publications'}>Publications</Link>
-            </Button>
-            <Button asChild variant="ghost" className=" font-normal">
-              <Link href={'/cv.pdf'}>CV</Link>
-            </Button> */}
-          </div>
-
-          <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden"
-            onClick={() => {
-              setMenuIsOpen(!menuIsOpen);
-            }}
-          >
-            {menuIsOpen ? (
-              <RiCloseLine className="w-5 h-5" />
-            ) : (
-              <RiMenuLine className="w-5 h-5" />
-            )}
-          </Button>
-
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() =>
-              theme === 'light' ? setTheme('dark') : setTheme('light')
-            }
-          >
-            {theme === 'light' ? (
-              <RiSunLine className="w-5 h-5" />
-            ) : (
-              <RiMoonLine className="w-5 h-5" />
-            )}
-          </Button>
-        </div>
-      </nav>
-
-      <div
-        className={`h-lvh flex flex-col w-3/4 m-auto mt-8 gap-4 md:hidden ${
-          menuIsOpen ? 'block' : ' hidden'
-        }`}
-        onClick={() => setMenuIsOpen(false)}
+    <header className="page-container site-header">
+      <a className="skip-link" href="#main-content">Skip to content</a>
+      {navigations.length > 0 && (
+        <nav className="site-navigation" aria-label="Main navigation">
+          {navigations.map((navigation) => (
+            <Link href={navigation.route} key={navigation.name}>
+              {navigation.name}
+            </Link>
+          ))}
+        </nav>
+      )}
+      <button
+        type="button"
+        className="theme-toggle"
+        aria-label={themeLabel}
+        title={themeLabel}
+        disabled={!mounted}
+        onClick={() => setTheme(isDark ? 'light' : 'dark')}
       >
-        {nav}
-      </div>
-    </div>
+        {isDark ? <RiSunLine size={20} aria-hidden="true" /> : <RiMoonLine size={20} aria-hidden="true" />}
+      </button>
+    </header>
   );
 }

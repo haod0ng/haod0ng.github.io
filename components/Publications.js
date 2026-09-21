@@ -3,75 +3,57 @@ import Image from 'next/image';
 import { personalInfo } from '@/website.config';
 import { CustomMDX } from '@/components/mdx';
 
-function authorProcess(authorsStr, personalInfo) {
-  const authors = authorsStr.split('and');
-
-  const boldedAuthors = authors.map((author) => {
+function authorProcess(authorsStr, name) {
+  return authorsStr.split(/\s+and\s+/).map((author) => {
     author = author.trim().split(', ').reverse().join(' ').trim();
-
-    if (author === personalInfo) {
-      // console.log(author);
-      return `**${personalInfo}**`;
-    }
-
-    return author;
-  });
-
-  return boldedAuthors.join(', ');
+    return author === name ? `**${name}**` : author;
+  }).join(', ');
 }
 
 export default function Publications({ bibtex }) {
   const parsed = bibtexParse.toJSON(bibtex);
 
   return (
-    <ol className="flex flex-col gap-4">
-      {parsed.map((item) => {
-        const processedAuthors = item.entryTags.author
-        const description = item.entryTags.description;
-        // authorProcess(
-        //   item.entryTags.author,
-        //   personalInfo.name
-        // );
+    <ol className="publication-list" role="list">
+      {parsed.map((item, index) => {
+        const entry = item.entryTags;
+        const processedAuthors = authorProcess(entry.author, personalInfo.name);
+        const venue = (entry.journal || entry.booktitle || '').replace(/{|}/g, '');
+
         return (
-          <li key={item.entryTags.title} className=" list-decimal">
-            <h2 className="text-base font-medium dark:text-neutral-50">
-              {item.entryTags.url ? (
-                <a href={item.entryTags.url} className="underline">
-                  {item.entryTags.title.replace(/{|}/g, '')}
-                </a>
-              ) : (
-                item.entryTags.title.replace(/{|}/g, '')
+          <li key={item.citationKey} className="publication-row">
+            <span className="publication-number" aria-hidden="true">{index + 1}.</span>
+            <div className="publication-details">
+              <h3 className="publication-title">
+                {entry.url ? (
+                  <a href={entry.url}>{entry.title.replace(/{|}/g, '')}</a>
+                ) : entry.title.replace(/{|}/g, '')}
+              </h3>
+              <div className="publication-authors">
+                <CustomMDX source={processedAuthors} />
+              </div>
+              {(venue || entry.conference) && (
+                <p className="publication-venue">
+                  {venue}{venue && entry.conference ? ' ' : ''}
+                  {entry.conference && <span className="publication-conference">{entry.conference}</span>}
+                </p>
               )}
-            </h2>
-
-            <div className=" font-light text-neutral-600 dark:text-neutral-300">
-              {<CustomMDX source={processedAuthors} />}
-
-              <span className=" mr-2 italic font-normal">
-                {item.entryTags.journal?.replace(/{|}/g, '') ||
-                  item.entryTags.booktitle?.replace(/{|}/g, '')}
-              </span>
-              <span className="mr-2 italic">{item.entryTags.conference}</span>
-              {<CustomMDX source={description} />}
-              {item.entryTags.award &&
-                (item.entryTags.award === 'Honorable Mention' ? (
+              {entry.description && (
+                <div className="publication-links">
+                  <CustomMDX source={entry.description} />
+                </div>
+              )}
+              {entry.award && (
+                <p className="publication-award">
                   <Image
-                    src="/honor.jpg"
-                    alt="Honorable Mention"
+                    src={entry.award === 'Honorable Mention' ? '/honor.jpg' : '/best.jpg'}
+                    alt=""
                     width={20}
                     height={20}
-                    className=" h-5 w-5 inline-block mr-2"
                   />
-                ) : (
-                  <Image
-                    src="/best.jpg"
-                    alt="Honorable Mention"
-                    width={20}
-                    height={20}
-                    className="h-5 w-5 inline-block mr-2"
-                  />
-                ))}
-              <span className="font-bold h-5">{item.entryTags.award}</span>
+                  <span>{entry.award}</span>
+                </p>
+              )}
             </div>
           </li>
         );

@@ -1,30 +1,29 @@
 import AboutSection from "@/components/AboutSection";
 import NewsSection from "@/components/NewsSection";
 import ProjectSection from "@/components/ProjectSection";
-import PublicationsSection from "@/components/SelectedPublicationsSection";
+import SelectedPublicationsSection from "@/components/SelectedPublicationsSection";
 import ExperienceSection from "@/components/ExperienceSection";
-import bibtex from "@/data/bib/Publications.bib";
 import { homepageSection } from "@/website.config";
 
 export default function Page() {
   return (
-    <main className="md:w-[50rem] m-auto px-8 mt-32 flex flex-col gap-10 mb-20">
+    <main id="main-content" className="page-container page-content">
       {homepageSection.AboutSection && <AboutSection />}
       {homepageSection.NewsSection && <NewsSection />}
       {homepageSection.ExperienceSection && (
-        <div className="flex flex-col gap-3">
-          <h1 className="text-3xl font-semibold">Research Experiences</h1>
+        <section className="content-section" aria-labelledby="experience-heading">
+          <h2 id="experience-heading" className="section-heading">Research Experiences</h2>
           <ExperienceSection />
-        </div>
+        </section>
       )}
       {homepageSection.SelectedPublicationsSection && (
-        <PublicationsSection bibtex={bibtex} />
+        <SelectedPublicationsSection />
       )}
       {homepageSection.ProjectSection && (
-        <div className="flex flex-col gap-3">
-          <h1 className="text-3xl font-semibold">Projects</h1>
+        <section className="content-section" aria-labelledby="projects-heading">
+          <h2 id="projects-heading" className="section-heading">Projects</h2>
           <ProjectSection />
-        </div>
+        </section>
       )}
     </main>
   );

@@ -36,8 +36,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={`${font.className} bg-neutral-50 dark:bg-neutral-800`}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={font.className}>
         {/* <!-- Google Tag Manager (noscript) -->
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TJ3CSVQM"
         height="0" width="0" style={{ visibility:hidden }}></iframe></noscript>

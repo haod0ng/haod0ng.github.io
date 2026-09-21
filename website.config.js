@@ -1,15 +1,24 @@
 export const personalInfo = {
   name: 'Haodong Zheng',
-  profilePicture: '/profile1.jpg', //optional
-  role: 'PhD',
+  profilePicture: '/avatar.jpg', //optional
+  role: 'PhD student',
   university: 'EPFL',
+  universityWebsite: 'https://www.epfl.ch/en/',
   socialMedia: [
-    { name: 'Email', url: 'zhdwizard@gmail.com' },
-    { name: 'Twitter', url: 'https://x.com/zhd000' },
+    { name: 'Email', url: 'mailto:haodong.zheng@epfl.ch' },
+    {
+      name: 'Google Scholar',
+      url: 'https://scholar.google.com/citations?user=5ov2fqEAAAAJ&hl=zh-CN',
+    },
     {
       name: 'GitHub',
-      url: 'https://github.com/haodong98',
-    }
+      url: 'https://github.com/haod0ng',
+    },
+    {
+      name: 'LinkedIn',
+      url: 'https://www.linkedin.com/in/haodongzheng/',
+    },
+    { name: 'X', url: 'https://x.com/zhd000' },
   ],
 };
 
@@ -19,16 +28,13 @@ export const websiteInfo = {
   // teaserImage: "/teaser.jpg",
 };
 
-export const navigations = [
-  { name: 'Blogs', route: '/projects' }
-  // { name: 'CV', route: '/cv.pdf' }
-];
+export const navigations = [];
 
 export const homepageSection = {
   AboutSection: true,
   NewsSection: false,
   ExperienceSection: true,
-  SelectedPublicationsSection: false,
+  SelectedPublicationsSection: true,
 };
 
-export const fontStyle = 'mono'; // "sans" | "serif" | "mono" | "lato"
+export const fontStyle = 'sans'; // "sans" | "serif" | "mono" | "lato"

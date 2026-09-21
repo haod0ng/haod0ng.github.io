@@ -10,12 +10,11 @@ function getExperiences() {
 
 export default function ExperienceSection() {
   const exps = getExperiences().sort((a, b) => {
-    console.log(a.metadata.sortdate, b.metadata.sortdate);
     return new Date(b.metadata.sortdate) - new Date(a.metadata.sortdate);
   });
 
   return (
-    <section className="grid gap-5 transition-all h-auto">
+    <div className="experience-list">
       {exps.map((project) => (
         <ExperienceCard
           key={project.slug}
@@ -27,6 +26,6 @@ export default function ExperienceSection() {
           slug={project.slug}
         />
       ))}
-    </section>
+    </div>
   );
 }

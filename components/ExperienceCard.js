@@ -1,7 +1,5 @@
 import React from "react";
-import Link from "next/link";
 import Image from "next/image";
-import dynamic from 'next/dynamic';
 
 import EPFL from '@/data/experiences/epfl.mdx';
 import UwMd from '@/data/experiences/uw.mdx';
@@ -24,26 +22,18 @@ export default function ExperienceCard({
   }
 
   return (
-    <div className="flex flex-col gap-3 md:flex-row md:gap-5 min-h-[150px]">
-      <div className="flex items-center justify-center md:w-1/4">
-        <Image src={img} alt={institution} width={120} height={120} />
-      </div>
-      <div className="flex flex-col gap-3 md:w-3/4">
-        <p className="text-xl font-semibold" >
-          <span className="" style={{ color: 'rgb(51, 161, 201)' }}> {institution} </span>
-          <br />
-          <span className="p">{date}</span> 
-          <br />
-          {role}
-        </p>
-
-        {/* <h2 className="text-lg font-medium">
-        </h2> */}
-
-        <article className="flex flex-col gap-2 text-justify">
+    <article className="experience-row" aria-labelledby={`experience-${slug}`}>
+      <Image src={img} alt={`${institution} logo`} width={48} height={48} className="experience-logo" />
+      <div className="experience-details">
+        <div className="experience-heading">
+          <h3 id={`experience-${slug}`} className="experience-institution">{institution}</h3>
+          <p className="experience-date">{date}</p>
+        </div>
+        <p className="experience-role">{role}</p>
+        <div className="experience-description">
           <MdFunc />
-        </article>
+        </div>
       </div>
-    </div>
+    </article>
   );
 }

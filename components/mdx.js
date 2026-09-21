@@ -98,12 +98,6 @@ let components = {
   code: Code,
   Table,
 
-  strong: (props) => (
-    <strong
-      className="font-semibold text-neutral-900 dark:text-neutral-100"
-      {...props}
-    />
-  ),
 };
 
 export function CustomMDX(props) {
